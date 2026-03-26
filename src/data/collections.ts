@@ -92,6 +92,26 @@ import travel2 from "@/assets/travel-2.jpg";
 import travel3 from "@/assets/travel-3.jpg";
 import travel4 from "@/assets/travel-4.jpg";
 import travel5 from "@/assets/travel-5.jpg";
+import travel6 from "@/assets/travel-6.jpg";
+import travel7 from "@/assets/travel-7.jpg";
+import travel8 from "@/assets/travel-8.jpg";
+import travel9 from "@/assets/travel-9.jpg";
+import travel10 from "@/assets/travel-10.jpg";
+import travel11 from "@/assets/travel-11.jpg";
+import travel12 from "@/assets/travel-12.jpg";
+import travel13 from "@/assets/travel-13.jpg";
+import travel14 from "@/assets/travel-14.jpg";
+import travel15 from "@/assets/travel-15.jpg";
+import travel16 from "@/assets/travel-16.jpg";
+import travel17 from "@/assets/travel-17.jpg";
+import travel18 from "@/assets/travel-18.jpg";
+import travel19 from "@/assets/travel-19.jpg";
+import travel20 from "@/assets/travel-20.jpg";
+import travel21 from "@/assets/travel-21.jpg";
+import travel22 from "@/assets/travel-22.jpg";
+import travel23 from "@/assets/travel-23.jpg";
+import travel24 from "@/assets/travel-24.jpg";
+import travel25 from "@/assets/travel-25.jpg";
 import events1 from "@/assets/events-1.jpg";
 import events2 from "@/assets/events-2.jpg";
 import events3 from "@/assets/events-3.jpg";
@@ -339,13 +359,33 @@ const travelCollection: Collection = {
   id: "travel",
   title: "Travel",
   cover: travel2,
-  photoCount: 5,
+  photoCount: 25,
   photos: [
     { id: "travel-1", src: travel1, alt: "Camels with colorful saddles in front of the Pyramids of Giza" },
     { id: "travel-2", src: travel2, alt: "Pyramids of Giza against a blue sky" },
     { id: "travel-3", src: travel3, alt: "Dolphins surfacing in turquoise ocean waters" },
     { id: "travel-4", src: travel4, alt: "Beach sunset with palm tree silhouette" },
     { id: "travel-5", src: travel5, alt: "Dolphin emerging from calm blue sea" },
+    { id: "travel-6", src: travel6, alt: "Travel photo 6" },
+    { id: "travel-7", src: travel7, alt: "Travel photo 7" },
+    { id: "travel-8", src: travel8, alt: "Travel photo 8" },
+    { id: "travel-9", src: travel9, alt: "Travel photo 9" },
+    { id: "travel-10", src: travel10, alt: "Travel photo 10" },
+    { id: "travel-11", src: travel11, alt: "Travel photo 11" },
+    { id: "travel-12", src: travel12, alt: "Travel photo 12" },
+    { id: "travel-13", src: travel13, alt: "Travel photo 13" },
+    { id: "travel-14", src: travel14, alt: "Travel photo 14" },
+    { id: "travel-15", src: travel15, alt: "Travel photo 15" },
+    { id: "travel-16", src: travel16, alt: "Travel photo 16" },
+    { id: "travel-17", src: travel17, alt: "Travel photo 17" },
+    { id: "travel-18", src: travel18, alt: "Travel photo 18" },
+    { id: "travel-19", src: travel19, alt: "Travel photo 19" },
+    { id: "travel-20", src: travel20, alt: "Travel photo 20" },
+    { id: "travel-21", src: travel21, alt: "Travel photo 21" },
+    { id: "travel-22", src: travel22, alt: "Travel photo 22" },
+    { id: "travel-23", src: travel23, alt: "Travel photo 23" },
+    { id: "travel-24", src: travel24, alt: "Travel photo 24" },
+    { id: "travel-25", src: travel25, alt: "Travel photo 25" },
   ],
 };
 

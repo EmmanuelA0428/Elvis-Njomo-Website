@@ -54,7 +54,7 @@ const CollectionDetail = () => {
         <h1 className="mb-2 text-4xl font-bold tracking-tight md:text-6xl">
           {collection.title}
         </h1>
-        <p className="mb-12 text-muted-foreground font-semibold">({collection.photoCount} photos)</p>
+        <p className="mb-12 text-muted-foreground font-semibold">{collection.photoCount} photos</p>
         <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
           {shuffledPhotos.map((photo, i) => (
             <motion.div

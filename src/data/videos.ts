@@ -7,6 +7,13 @@ export interface Video {
 }
 
 export const videos: Video[] = [
+   {
+    id: "video-12",
+    title: "My Demo Reel",
+    youtubeId: "pdQF0xrgeCY",
+    thumbnail: "https://img.youtube.com/vi/pdQF0xrgeCY/maxresdefault.jpg",
+    youtubeUrl: "https://www.youtube.com/watch?v=pdQF0xrgeCY",
+  },
   {
     id: "video-1",
     title: "Seneca Lake Pure Waters Association Overview",
@@ -77,18 +84,5 @@ export const videos: Video[] = [
     thumbnail: "https://img.youtube.com/vi/jE9sWOpmvFc/maxresdefault.jpg",
     youtubeUrl: "https://www.youtube.com/shorts/jE9sWOpmvFc",
   },
-  {
-    id: "video-11",
-    title: "HWS Center for Teaching & Learning",
-    youtubeId: "e81HuFlGM4w",
-    thumbnail: "https://img.youtube.com/vi/e81HuFlGM4w/maxresdefault.jpg",
-    youtubeUrl: "https://www.youtube.com/shorts/e81HuFlGM4w",
-  },
-  {
-    id: "video-12",
-    title: "My Demo Reel",
-    youtubeId: "pdQF0xrgeCY",
-    thumbnail: "https://img.youtube.com/vi/pdQF0xrgeCY/maxresdefault.jpg",
-    youtubeUrl: "https://www.youtube.com/watch?v=pdQF0xrgeCY",
-  },
+ 
 ];
