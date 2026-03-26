@@ -1,13 +1,19 @@
 import { motion } from "framer-motion";
 import { Mail, Instagram, Phone, ArrowUpRight } from "lucide-react";
+import contactBg from "@/assets/contact-bg.jpg";
 
 const ContactSection = () => {
   return (
     <section className="relative overflow-hidden px-6 py-32">
-      {/* Subtle gradient transition from sections above */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background/0 to-transparent" />
+      {/* Background image */}
+      <img
+        src={contactBg}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-background/75" />
 
-      <div className="mx-auto max-w-3xl text-center">
+      <div className="relative mx-auto max-w-3xl text-center">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -45,11 +51,11 @@ const ContactSection = () => {
           className="flex flex-col items-center gap-6"
         >
           <a
-            href="mailto:hello@yourdomain.com"
+            href="mailto:njomowaweru@gmail.com"
             className="group flex items-center gap-3 text-xl font-medium text-foreground transition-colors hover:text-primary"
           >
             <Mail className="h-5 w-5" />
-            hello@yourdomain.com
+            njomowaweru@gmail.com
             <ArrowUpRight className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
           </a>
 
@@ -68,7 +74,7 @@ const ContactSection = () => {
               className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
             >
               <Phone className="h-5 w-5" />
-              3106580519
+              (310) 658-0519
             </a>
           </div>
         </motion.div>

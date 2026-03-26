@@ -41,7 +41,7 @@ const Videos = () => {
                   <Play className="h-6 w-6 fill-background text-background" />
                 </div>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">{video.title}</p>
+              <p className="mt-2 text-sm font-bold text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{video.title}</p>
             </motion.a>
           ))}
         </div>

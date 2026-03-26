@@ -84,4 +84,11 @@ export const videos: Video[] = [
     thumbnail: "https://img.youtube.com/vi/e81HuFlGM4w/maxresdefault.jpg",
     youtubeUrl: "https://www.youtube.com/shorts/e81HuFlGM4w",
   },
+  {
+    id: "video-12",
+    title: "My Demo Reel",
+    youtubeId: "pdQF0xrgeCY",
+    thumbnail: "https://img.youtube.com/vi/pdQF0xrgeCY/maxresdefault.jpg",
+    youtubeUrl: "https://www.youtube.com/watch?v=pdQF0xrgeCY",
+  },
 ];

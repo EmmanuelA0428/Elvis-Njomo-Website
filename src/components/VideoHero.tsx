@@ -26,7 +26,7 @@ const VideoHero = () => {
       >
         {/* Replace with your showreel video */}
         <source
-          src="/videos/hero-reel.mp4"
+          src="/video/hero-reel.mp4"
           type="video/mp4"
         />
       </video>
