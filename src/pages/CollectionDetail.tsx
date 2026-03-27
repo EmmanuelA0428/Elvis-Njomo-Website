@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, X } from "lucide-react";
 import { motion } from "framer-motion";
@@ -16,7 +16,7 @@ const shuffleArray = <T,>(items: T[]): T[] => {
 const CollectionDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number | null>(null);
   const collection = collections.find((c) => c.id === id);
 
   const shuffledPhotos = useMemo(() => {
@@ -24,14 +24,34 @@ const CollectionDetail = () => {
     return shuffleArray(collection.photos);
   }, [collection]);
 
+  const selectedPhoto = currentPhotoIndex !== null ? shuffledPhotos[currentPhotoIndex] : null;
+
+  const goPrevious = useCallback(() => {
+    if (currentPhotoIndex === null || shuffledPhotos.length === 0) return;
+    setCurrentPhotoIndex((prev) => {
+      if (prev === null) return 0;
+      return (prev - 1 + shuffledPhotos.length) % shuffledPhotos.length;
+    });
+  }, [currentPhotoIndex, shuffledPhotos.length]);
+
+  const goNext = useCallback(() => {
+    if (currentPhotoIndex === null || shuffledPhotos.length === 0) return;
+    setCurrentPhotoIndex((prev) => {
+      if (prev === null) return 0;
+      return (prev + 1) % shuffledPhotos.length;
+    });
+  }, [currentPhotoIndex, shuffledPhotos.length]);
+
   useEffect(() => {
-    if (!selectedPhoto) return;
+    if (selectedPhoto === null) return;
     const handler = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelectedPhoto(null);
+      if (event.key === "Escape") setCurrentPhotoIndex(null);
+      if (event.key === "ArrowRight") goNext();
+      if (event.key === "ArrowLeft") goPrevious();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [selectedPhoto]);
+  }, [selectedPhoto, goNext, goPrevious]);
 
   if (!collection) {
     return (
@@ -69,7 +89,7 @@ const CollectionDetail = () => {
                 alt={photo.alt}
                 className="w-full cursor-pointer object-cover transition-transform duration-500 hover:scale-105"
                 loading="lazy"
-                onClick={() => setSelectedPhoto(photo)}
+                onClick={() => setCurrentPhotoIndex(i)}
               />
             </motion.div>
           ))}
@@ -79,22 +99,40 @@ const CollectionDetail = () => {
       {selectedPhoto && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4"
-          onClick={() => setSelectedPhoto(null)}
+          onClick={() => setCurrentPhotoIndex(null)}
         >
           <div className="relative max-h-full max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
             <button
-              onClick={() => setSelectedPhoto(null)}
+              onClick={() => setCurrentPhotoIndex(null)}
               className="absolute right-2 top-2 rounded-full bg-white/90 p-2 text-black shadow"
               aria-label="Close"
             >
               <X className="h-4 w-4" />
             </button>
+            <button
+              onClick={goPrevious}
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-black shadow hover:bg-white"
+              aria-label="Previous photo"
+            >
+              ‹
+            </button>
             <img
               src={selectedPhoto.src}
               alt={selectedPhoto.alt}
-              className="max-h-[90vh] w-auto max-w-full rounded-lg"
+              className="mx-auto max-h-[80vh] w-auto max-w-[80vw] rounded-lg"
+              onClick={goNext}
+              title="Click image to go next"
             />
-            <p className="mt-2 text-center text-sm text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{selectedPhoto.alt}</p>
+            <button
+              onClick={goNext}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-black shadow hover:bg-white"
+              aria-label="Next photo"
+            >
+              ›
+            </button>
+            <p className="mt-3 text-center text-sm text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              {currentPhotoIndex !== null && `${currentPhotoIndex + 1} / ${shuffledPhotos.length}`} • {selectedPhoto.alt}
+            </p>
           </div>
         </div>
       )}
