@@ -42,7 +42,7 @@ const VideoHero = () => {
       <div className="absolute inset-0 hero-overlay" />
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 pt-20 text-center sm:pt-24">
         <h1 className="mb-4 text-5xl font-bold tracking-tight text-foreground md:text-7xl lg:text-8xl">
           ELVIS NJOMO
         </h1>

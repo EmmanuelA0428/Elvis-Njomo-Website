@@ -17,8 +17,12 @@ export default defineConfig({
               .title("Site settings")
               .id("siteSettings")
               .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
+            S.listItem()
+              .title("About page")
+              .id("aboutPage")
+              .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
             ...S.documentTypeListItems().filter(
-              (listItem) => listItem.getId() !== "siteSettings",
+              (listItem) => !["siteSettings", "aboutPage"].includes(listItem.getId() ?? ""),
             ),
           ]),
     }),

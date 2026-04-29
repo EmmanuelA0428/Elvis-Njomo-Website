@@ -19,3 +19,9 @@ export interface Video {
   thumbnail: string;
   youtubeUrl: string;
 }
+
+export interface AboutPageContent {
+  heading: string;
+  body: string;
+  imageSrc: string;
+}

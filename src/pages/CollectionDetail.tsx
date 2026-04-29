@@ -75,7 +75,7 @@ const CollectionDetail = () => {
   }
 
   return (
-    <main className="min-h-screen bg-background px-6 py-12">
+    <main className="min-h-screen bg-background px-6 pb-12 pt-20">
       <div className="mx-auto max-w-6xl">
         <button
           onClick={() => navigate("/photos")}

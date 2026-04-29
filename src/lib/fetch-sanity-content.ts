@@ -1,4 +1,4 @@
-import type { Collection, Photo, Video } from "@/data/types";
+import type { AboutPageContent, Collection, Photo, Video } from "@/data/types";
 import { sanityClient, sanityConfigured, urlForImage } from "@/lib/sanity";
 import type { SanityImageSource } from "@sanity/image-url";
 
@@ -123,5 +123,34 @@ export async function fetchSiteSettingsHomePanels(): Promise<HomePanelSettings |
   return {
     photosPanelSrc: resolveSanityImageUrl(row.photosImage, row.photosAssetUrl, 2000),
     videosPanelSrc: resolveSanityImageUrl(row.videosImage, row.videosAssetUrl, 2000),
+  };
+}
+
+const aboutPageQuery = `*[_type == "aboutPage" && _id == "aboutPage"][0]{
+  heading,
+  body,
+  image,
+  "imageAssetUrl": image.asset->url
+}`;
+
+type SanityAboutPageRow = {
+  heading?: string;
+  body?: string;
+  image?: SanityImageSource;
+  imageAssetUrl?: string | null;
+};
+
+export async function fetchAboutPage(): Promise<AboutPageContent | null> {
+  if (!sanityConfigured || !sanityClient) {
+    throw new Error("Sanity is not configured");
+  }
+  const row = await sanityClient.fetch<SanityAboutPageRow | null>(aboutPageQuery);
+  if (!row) {
+    return null;
+  }
+  return {
+    heading: (row.heading ?? "").trim(),
+    body: (row.body ?? "").trim(),
+    imageSrc: resolveSanityImageUrl(row.image, row.imageAssetUrl, 2000),
   };
 }
