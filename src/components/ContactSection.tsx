@@ -1,15 +1,12 @@
 import { motion } from "framer-motion";
 import { Mail, Instagram, Phone, ArrowUpRight } from "lucide-react";
-import contactBg from "@/assets/contact-bg.jpg";
 
 const ContactSection = () => {
   return (
     <section className="relative overflow-hidden px-6 py-32">
-      {/* Background image */}
-      <img
-        src={contactBg}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-background to-zinc-950"
+        aria-hidden
       />
       <div className="absolute inset-0 bg-background/75" />
 

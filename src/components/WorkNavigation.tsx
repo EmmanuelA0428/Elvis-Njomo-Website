@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import photosBg from "@/assets/photos-section-bg.jpg";
-import landscapesImg from "@/assets/collection-landscapes.jpg";
+
+const photosPanelClass =
+  "absolute inset-0 bg-gradient-to-br from-zinc-950 via-emerald-950/40 to-zinc-900 bg-[length:200%_200%] transition-transform duration-700 group-hover:scale-105";
+const videosPanelClass =
+  "absolute inset-0 bg-gradient-to-bl from-zinc-950 via-amber-950/30 to-zinc-900 bg-[length:200%_200%] transition-transform duration-700 group-hover:scale-105";
 
 const WorkNavigation = () => {
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-col md:flex-row">
-      {/* Photos Section */}
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -17,14 +19,13 @@ const WorkNavigation = () => {
         onClick={() => navigate("/photos")}
         className="group relative flex h-[50vh] md:h-[70vh] md:w-1/2 cursor-pointer items-center justify-center overflow-hidden"
       >
-        <motion.img
-          src={photosBg}
-          alt="Photos"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          initial={{ scale: 1.15 }}
+        <motion.div
+          className={photosPanelClass}
+          initial={{ scale: 1.08 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: "easeOut" }}
+          aria-hidden
         />
         <div className="absolute inset-0 bg-background/60 transition-colors duration-500 group-hover:bg-background/40" />
         <motion.div
@@ -41,7 +42,6 @@ const WorkNavigation = () => {
         </motion.div>
       </motion.section>
 
-      {/* Videos Section */}
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -50,14 +50,13 @@ const WorkNavigation = () => {
         onClick={() => navigate("/videos")}
         className="group relative flex h-[50vh] md:h-[70vh] md:w-1/2 cursor-pointer items-center justify-center overflow-hidden"
       >
-        <motion.img
-          src={landscapesImg}
-          alt="Videos"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          initial={{ scale: 1.15 }}
+        <motion.div
+          className={videosPanelClass}
+          initial={{ scale: 1.08 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: "easeOut" }}
+          aria-hidden
         />
         <div className="absolute inset-0 bg-background/60 transition-colors duration-500 group-hover:bg-background/40" />
         <motion.div

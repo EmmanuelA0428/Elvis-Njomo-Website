@@ -1,15 +1,15 @@
 /**
- * One-time: uploads local assets and creates collection + video documents in Sanity.
- * Requires: npm install && SANITY_API_WRITE_TOKEN in env (from sanity.io/manage → API → Tokens).
+ * Uploads JPEGs from ./migration-assets/ using metadata in ./migration-source.ts.
+ * Copy gallery JPEGs into migration-assets/ (same filenames as before: theater-1.jpg, …).
+ * Requires SANITY_API_WRITE_TOKEN in .env
  *
  * Run: npm run migrate:sanity
  */
 import "dotenv/config";
 import { createClient } from "@sanity/client";
-import { createReadStream, existsSync } from "node:fs";
+import { createReadStream, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { collections } from "../src/data/collections-static.ts";
-import { videos as videosStatic } from "../src/data/videos-static.ts";
+import { migrationCollections, migrationVideos } from "./migration-source.ts";
 
 const projectId = process.env.SANITY_PROJECT_ID || "mokhd6fe";
 const dataset = process.env.SANITY_DATASET || "production";
@@ -28,18 +28,8 @@ const client = createClient({
   useCdn: false,
 });
 
-const ASSETS = join(process.cwd(), "src/assets");
-
-const COVER_FILE: Record<string, string> = {
-  theater: "theater-1.jpg",
-  dance: "dance-1.jpg",
-  sports: "sports-6.jpg",
-  graduation: "graduation-3.jpg",
-  events: "events-20.jpg",
-  travel: "travel-2.jpg",
-  landscapes: "landscape-4.jpg",
-  wildlife: "wildlife-6.jpg",
-};
+/** Put JPEG files here before migrating (not committed). See scripts/migration-source.ts for filenames. */
+const ASSETS = join(process.cwd(), "migration-assets");
 
 function photoIdToFilename(id: string): string {
   if (id.startsWith("land-")) return `landscape-${id.slice(5)}.jpg`;
@@ -67,7 +57,6 @@ function isRetryableNetworkError(err: unknown): boolean {
   return false;
 }
 
-/** Sanity occasionally returns 502 under load; asset uploads are retried with backoff. */
 async function withRetry<T>(label: string, fn: () => Promise<T>, maxAttempts = 8): Promise<T> {
   let last: unknown;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
@@ -93,66 +82,73 @@ async function uploadImageFile(filepath: string, filename: string) {
 }
 
 async function main() {
-  for (let i = 0; i < collections.length; i += 1) {
-    const c = collections[i];
-    const slug = c.id;
-    const coverName = COVER_FILE[slug];
-    if (!coverName) {
-      console.warn(`No cover mapping for ${slug}, skip`);
-      continue;
-    }
-    const coverPath = join(ASSETS, coverName);
-    if (!existsSync(coverPath)) {
-      console.warn(`Missing cover ${coverPath}, skip collection ${slug}`);
-      continue;
-    }
-    const coverAsset = await uploadImageFile(coverPath, coverName);
-    await sleep(UPLOAD_GAP_MS);
+  if (!existsSync(ASSETS)) {
+    mkdirSync(ASSETS, { recursive: true });
+  }
+  const probe = join(ASSETS, migrationCollections[0].coverFile);
+  const hasImageAssets = existsSync(probe);
 
-    const photos: Array<{
-      _key: string;
-      image: { _type: "image"; asset: { _type: "reference"; _ref: string } };
-      alt: string;
-    }> = [];
-
-    for (const p of c.photos) {
-      const fn = photoIdToFilename(p.id);
-      const fp = join(ASSETS, fn);
-      if (!existsSync(fp)) {
-        console.warn(`  skip missing file: ${fn}`);
-        continue;
-      }
-      const asset = await uploadImageFile(fp, fn);
-      await sleep(UPLOAD_GAP_MS);
-      photos.push({
-        _key: safeKey(p.id),
-        image: {
-          _type: "image",
-          asset: { _type: "reference", _ref: asset._id },
-        },
-        alt: p.alt,
-      });
-    }
-
-    const doc = {
-      _id: `collection-${slug}`,
-      _type: "collection" as const,
-      title: c.title,
-      slug: { _type: "slug" as const, current: slug },
-      order: i,
-      cover: {
-        _type: "image" as const,
-        asset: { _type: "reference" as const, _ref: coverAsset._id },
-      },
-      photos,
-    };
-
-    await withRetry(`save ${slug}`, () => client.createOrReplace(doc));
-    console.log(`Published collection “${c.title}” (${photos.length} photos)`);
+  if (!hasImageAssets) {
+    console.warn(`No JPEGs found in ${ASSETS}/ — skipping collection uploads. (Videos below still run.)`);
   }
 
-  for (let i = 0; i < videosStatic.length; i += 1) {
-    const v = videosStatic[i];
+  if (hasImageAssets) {
+    for (let i = 0; i < migrationCollections.length; i += 1) {
+      const c = migrationCollections[i];
+      const slug = c.id;
+      const coverPath = join(ASSETS, c.coverFile);
+      if (!existsSync(coverPath)) {
+        console.warn(`Missing cover ${c.coverFile}, skip collection ${slug}`);
+        continue;
+      }
+      const coverAsset = await uploadImageFile(coverPath, c.coverFile);
+      await sleep(UPLOAD_GAP_MS);
+
+      const photos: Array<{
+        _key: string;
+        image: { _type: "image"; asset: { _type: "reference"; _ref: string } };
+        alt: string;
+      }> = [];
+
+      for (const p of c.photos) {
+        const fn = photoIdToFilename(p.id);
+        const fp = join(ASSETS, fn);
+        if (!existsSync(fp)) {
+          console.warn(`  skip missing file: ${fn}`);
+          continue;
+        }
+        const asset = await uploadImageFile(fp, fn);
+        await sleep(UPLOAD_GAP_MS);
+        photos.push({
+          _key: safeKey(p.id),
+          image: {
+            _type: "image",
+            asset: { _type: "reference", _ref: asset._id },
+          },
+          alt: p.alt,
+        });
+      }
+
+      const doc = {
+        _id: `collection-${slug}`,
+        _type: "collection" as const,
+        title: c.title,
+        slug: { _type: "slug" as const, current: slug },
+        order: i,
+        cover: {
+          _type: "image" as const,
+          asset: { _type: "reference" as const, _ref: coverAsset._id },
+        },
+        photos,
+      };
+
+      await withRetry(`save ${slug}`, () => client.createOrReplace(doc));
+      console.log(`Published collection “${c.title}” (${photos.length} photos)`);
+    }
+  }
+
+  for (let i = 0; i < migrationVideos.length; i += 1) {
+    const v = migrationVideos[i];
     const doc = {
       _id: `video-${v.youtubeId}`,
       _type: "video" as const,

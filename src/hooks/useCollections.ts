@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Collection } from "@/data/types";
-import { collections as collectionsStatic } from "@/data/collections-static";
 import { sanityConfigured } from "@/lib/sanity";
 import { fetchCollectionsFromSanity } from "@/lib/fetch-sanity-content";
 
@@ -9,16 +8,12 @@ export function useCollections() {
     queryKey: ["collections", import.meta.env.VITE_SANITY_PROJECT_ID],
     queryFn: async (): Promise<Collection[]> => {
       if (!sanityConfigured) {
-        return collectionsStatic;
+        return [];
       }
       try {
-        const data = await fetchCollectionsFromSanity();
-        if (data.length === 0) {
-          return collectionsStatic;
-        }
-        return data;
+        return await fetchCollectionsFromSanity();
       } catch {
-        return collectionsStatic;
+        return [];
       }
     },
     staleTime: 60_000,
