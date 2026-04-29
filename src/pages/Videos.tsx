@@ -39,6 +39,15 @@ const Videos = () => {
                 src={video.thumbnail}
                 alt={video.title}
                 className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                onError={(e) => {
+                  const el = e.currentTarget;
+                  const id = video.youtubeId;
+                  if (el.src.includes("maxresdefault")) {
+                    el.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+                  } else if (el.src.includes("hqdefault")) {
+                    el.src = `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+                  }
+                }}
               />
               <div className="absolute inset-0 flex items-center justify-center bg-background/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-foreground/80">

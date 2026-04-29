@@ -18,13 +18,19 @@ const CollectionCard = ({ collection, index }: CollectionCardProps) => {
       onClick={() => navigate(`/photos/${collection.id}`)}
       className="group cursor-pointer overflow-hidden rounded-lg"
     >
-      <div className="relative aspect-[3/4] overflow-hidden">
-        <img
-          src={collection.cover}
-          alt={collection.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
+      <div className="relative aspect-[3/4] overflow-hidden bg-muted">
+        {collection.cover ? (
+          <img
+            src={collection.cover}
+            alt={collection.title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center px-4 text-center text-sm text-muted-foreground">
+            Add a cover image in Sanity Studio
+          </div>
+        )}
         <div className="absolute inset-0 bg-background/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 to-transparent p-6">
           <h3 className="text-xl font-bold text-foreground drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">{collection.title}</h3>
