@@ -40,7 +40,7 @@ const WorkNavigation = ({
   const showVideosImg = Boolean(videosImageSrc);
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div id="work" className="flex flex-col md:flex-row">
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

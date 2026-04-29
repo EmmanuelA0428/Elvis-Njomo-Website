@@ -3,6 +3,13 @@ import { useEffect, useState } from "react";
 const VideoHero = () => {
   const [opacity, setOpacity] = useState(1);
 
+  const scrollToWork = () => {
+    document.getElementById("work")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -42,16 +49,22 @@ const VideoHero = () => {
         <p className="max-w-xl text-xl italic text-foreground/80 md:text-2xl lg:text-3xl">
           Photography & Videography
         </p>
-        <div className="mt-12 animate-bounce">
+        <button
+          type="button"
+          onClick={scrollToWork}
+          className="mt-12 inline-flex animate-bounce rounded-full p-2 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          aria-label="Scroll to portfolio"
+        >
           <svg
-            className="h-6 w-6 text-muted-foreground"
+            className="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
-        </div>
+        </button>
       </div>
     </section>
   );
