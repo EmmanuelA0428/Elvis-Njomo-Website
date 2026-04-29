@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Play } from "lucide-react";
 import { motion } from "framer-motion";
-import { videos } from "@/data/videos";
+import { useVideos } from "@/hooks/useVideos";
 
 const Videos = () => {
   const navigate = useNavigate();
+  const { data: videos = [], isLoading } = useVideos();
 
   return (
     <main className="min-h-screen bg-background px-6 py-12">
@@ -19,8 +20,11 @@ const Videos = () => {
         <h1 className="mb-12 text-4xl font-bold tracking-tight md:text-6xl">
           Video Work
         </h1>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {videos.map((video, i) => (
+        {isLoading ? (
+          <p className="text-muted-foreground">Loading videos…</p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {videos.map((video, i) => (
             <motion.a
               key={video.id}
               href={video.youtubeUrl}
@@ -44,7 +48,8 @@ const Videos = () => {
               <p className="mt-2 text-sm font-bold text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{video.title}</p>
             </motion.a>
           ))}
-        </div>
+          </div>
+        )}
       </div>
     </main>
   );

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import type { Collection } from "@/data/collections";
+import type { Collection } from "@/data/types";
 
 interface CollectionCardProps {
   collection: Collection;

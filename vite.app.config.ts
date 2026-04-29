@@ -4,6 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
+// Named vite.app.config.ts (not vite.config.*) so `sanity dev` does not auto-merge this config and bundle src/App.tsx.
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",

@@ -1,10 +1,16 @@
+import { useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { collections } from "@/data/collections";
 import CollectionCard from "@/components/CollectionCard";
+import { useCollections } from "@/hooks/useCollections";
 
 const Photos = () => {
   const navigate = useNavigate();
+  const { data: collections = [], isLoading } = useCollections();
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
 
   return (
     <main className="min-h-screen bg-background px-6 py-12">
@@ -19,11 +25,15 @@ const Photos = () => {
         <h1 className="mb-12 text-4xl font-bold tracking-tight md:text-6xl">
           Photo Collections
         </h1>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {collections.map((collection, i) => (
-            <CollectionCard key={collection.id} collection={collection} index={i} />
-          ))}
-        </div>
+        {isLoading ? (
+          <p className="text-muted-foreground">Loading collections…</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {collections.map((collection, i) => (
+              <CollectionCard key={collection.id} collection={collection} index={i} />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

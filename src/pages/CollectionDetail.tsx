@@ -1,8 +1,8 @@
-import { useMemo, useEffect, useState, useCallback } from "react";
+import { useMemo, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { collections, Photo } from "@/data/collections";
+import { useCollections } from "@/hooks/useCollections";
 
 const shuffleArray = <T,>(items: T[]): T[] => {
   const result = [...items];
@@ -17,7 +17,12 @@ const CollectionDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number | null>(null);
+  const { data: collections = [], isLoading } = useCollections();
   const collection = collections.find((c) => c.id === id);
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [id]);
 
   const shuffledPhotos = useMemo(() => {
     if (!collection) return [];
@@ -52,6 +57,14 @@ const CollectionDetail = () => {
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [selectedPhoto, goNext, goPrevious]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-muted-foreground">Loading collection…</p>
+      </div>
+    );
+  }
 
   if (!collection) {
     return (
