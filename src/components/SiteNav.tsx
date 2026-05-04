@@ -48,9 +48,10 @@ const SiteNav = () => {
     );
 
   const hamburgerClass = cn(
-    "md:hidden",
-    isHome && "text-white nav-hero-contrast hover:bg-white/10 hover:text-white",
-    !isHome && "text-foreground hover:bg-muted",
+    "md:hidden [&_svg]:!h-6 [&_svg]:!w-6",
+    isHome
+      ? "text-primary nav-icon-lift-hero hover:bg-primary/15 hover:text-primary"
+      : "text-foreground/95 nav-icon-lift hover:bg-muted hover:text-primary",
   );
 
   return (
@@ -76,7 +77,7 @@ const SiteNav = () => {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className={hamburgerClass} aria-label="Open menu">
-                <Menu className="h-6 w-6" />
+                <Menu className="block" aria-hidden />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[min(100%,20rem)]">
